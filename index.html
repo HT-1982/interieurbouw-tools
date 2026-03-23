@@ -9,13 +9,19 @@
 
 <!-- HEADER -->
 <div class="header">
-    <div class="logo">🛠 Interieurbouwtools</div>
 
-    <div class="nav">
-        <button onclick="loadPage('pages/home.html')">Home</button>
-        <button onclick="loadPage('pages/tool1.html')">Calculators</button>
-        <button onclick="loadPage('pages/tool2.html')">Zaagstaten</button>
+    <!-- LOGO (klikbaar naar home) -->
+    <div class="logo" onclick="loadPage('pages/home.html')">
+        <img src="./images/logo.png" alt="logo">
     </div>
+
+    <!-- NAV -->
+    <div class="nav">
+        <button onclick="setActive(this); loadPage('pages/home.html')" class="active">Home</button>
+        <button onclick="setActive(this); loadPage('pages/tool1.html')">Calculators</button>
+        <button onclick="setActive(this); loadPage('pages/tool2.html')">Zaagstaten</button>
+    </div>
+
 </div>
 
 <!-- MAIN -->
@@ -25,15 +31,15 @@
     <div class="sidebar">
         <h3>Tools</h3>
 
-        <button onclick="loadPage('pages/tool1.html')">
+        <button onclick="setActive(this); loadPage('pages/tool1.html')">
             📐 Materiaal Calculator
         </button>
 
-        <button onclick="loadPage('pages/tool2.html')">
+        <button onclick="setActive(this); loadPage('pages/tool2.html')">
             📏 Verstek Calculator
         </button>
 
-        <button onclick="loadPage('pages/tool3.html')">
+        <button onclick="setActive(this); loadPage('pages/tool3.html')">
             📦 Corpus Generator
         </button>
 
@@ -52,6 +58,12 @@
 <script>
 function loadPage(page) {
     document.getElementById("frame").src = page;
+}
+
+/* ACTIVE BUTTON */
+function setActive(el) {
+    document.querySelectorAll(".active").forEach(btn => btn.classList.remove("active"));
+    el.classList.add("active");
 }
 </script>
 
