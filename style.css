@@ -27,6 +27,7 @@ body {
 /* LOGO */
 .logo img {
     height: 150px;
+    padding: 0,0,0,0px;
     cursor: pointer;
 }
 
