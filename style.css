@@ -26,6 +26,7 @@ body {
 
 /* LOGO */
 .logo img {
+    height: 130px;
     display: flex;
     align-items: center;
     padding-top: 5px;
