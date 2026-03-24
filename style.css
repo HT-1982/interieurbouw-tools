@@ -13,7 +13,7 @@ body {
 
 /* HEADER */
 .header {
-    height: 90px;
+    height: 130px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -26,7 +26,7 @@ body {
 
 /* LOGO */
 .logo img {
-    height: 100px;
+    height: 140px;
     cursor: pointer;
 }
 
