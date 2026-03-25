@@ -7,42 +7,24 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
-
-    <!-- LOGO -->
     <div class="logo" onclick="goHome()">
         <img src="images/logo.png" alt="logo">
     </div>
 
-    <!-- NAV -->
     <div class="nav">
-        <button onclick="setActive(this); loadPage('pages/home.html')" class="active">Home</button>
-        <button onclick="setActive(this); loadPage('pages/calculators.html')"class="siderbar">Calculators</button>
-        <button onclick="setActive(this); loadPage('pages/tool2.html')">Zaagstaten</button>
+        <button onclick="setActive(this); loadSection('home')" class="active">Home</button>
+        <button onclick="setActive(this); loadSection('calculators')">Calculators</button>
+        <button onclick="setActive(this); loadSection('zaagstaten')">Zaagstaten</button>
     </div>
-
 </div>
 
-<!-- MAIN -->
 <div class="container">
 
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <h3>Tools</h3>
+    <div class="sidebar" id="sidebar"></div>
 
-        <button onclick="loadPage('pages/tool1.html')">📐 Materiaal Calculator</button>
-        <button onclick="loadPage('pages/tool2.html')">📏 Verstek Calculator</button>
-        <button onclick="loadPage('pages/tool3.html')">📦 Corpus Generator</button>
-
-        <div class="footer">
-            © 2026
-        </div>
-    </div>
-
-    <!-- CONTENT -->
     <div class="content">
-        <iframe id="frame" src="pages/home.html"></iframe>
+        <iframe id="frame"></iframe>
     </div>
 
 </div>
@@ -55,18 +37,53 @@ function loadPage(page) {
 function setActive(el) {
     document.querySelectorAll(".nav button")
         .forEach(btn => btn.classList.remove("active"));
-
     el.classList.add("active");
 }
 
-function goHome() {
-    loadPage('pages/home.html');
+function setSidebarActive(el) {
+    document.querySelectorAll(".sidebar button")
+        .forEach(btn => btn.classList.remove("active"));
+    el.classList.add("active");
+}
 
+function loadSection(section) {
+    const sidebar = document.getElementById("sidebar");
+
+    if (section === "home") {
+        sidebar.innerHTML = `
+            <h3>Dashboard</h3>
+            <button onclick="setSidebarActive(this); loadPage('pages/home.html')" class="active">🏠 Overzicht</button>
+        `;
+        loadPage('pages/home.html');
+    }
+
+    if (section === "calculators") {
+        sidebar.innerHTML = `
+            <h3>Calculators</h3>
+            <button onclick="setSidebarActive(this); loadPage('pages/tool1.html')" class="active">📐 Materiaal Calculator</button>
+            <button onclick="setSidebarActive(this); loadPage('pages/tool2.html')">📏 Verstek Calculator</button>
+        `;
+        loadPage('pages/tool1.html');
+    }
+
+    if (section === "zaagstaten") {
+        sidebar.innerHTML = `
+            <h3>Zaagstaten</h3>
+            <button onclick="setSidebarActive(this); loadPage('pages/tool3.html')" class="active">📦 Corpus Generator</button>
+        `;
+        loadPage('pages/tool3.html');
+    }
+}
+
+function goHome() {
     document.querySelectorAll(".nav button")
         .forEach(btn => btn.classList.remove("active"));
 
     document.querySelector(".nav button").classList.add("active");
+    loadSection('home');
 }
+
+window.onload = () => loadSection('home');
 </script>
 
 </body>
