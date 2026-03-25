@@ -1,55 +1,51 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <title>Interieurbouwtools</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Interieurbouwtools</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="header">
-    <div class="logo" onclick="goHome()">
-        <img src="images/logo.png" alt="logo">
-    </div>
+    <div class="logo" onclick="goHome()">LOGO</div>
 
     <div class="nav">
         <button onclick="setActive(this); loadSection('home')" class="active">Home</button>
         <button onclick="setActive(this); loadSection('calculators')">Calculators</button>
         <button onclick="setActive(this); loadSection('zaagstaten')">Zaagstaten</button>
     </div>
+
+    <div class="toggle" onclick="toggleSidebar()">⬅</div>
 </div>
 
 <div class="container">
-
     <div class="sidebar" id="sidebar"></div>
 
     <div class="content">
         <iframe id="frame"></iframe>
     </div>
-
 </div>
 
 <script>
-function loadPage(page) {
+function loadPage(page){
     document.getElementById("frame").src = page;
 }
 
-function setActive(el) {
-    document.querySelectorAll(".nav button")
-        .forEach(btn => btn.classList.remove("active"));
+function setActive(el){
+    document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
     el.classList.add("active");
 }
 
-function setSidebarActive(el) {
-    document.querySelectorAll(".sidebar button")
-        .forEach(btn => btn.classList.remove("active"));
+function setSidebarActive(el){
+    document.querySelectorAll(".sidebar button").forEach(b=>b.classList.remove("active"));
     el.classList.add("active");
 }
 
-function loadSection(section) {
+function loadSection(section){
     const sidebar = document.getElementById("sidebar");
 
-    if (section === "home") {
+    if(section==="home"){
         sidebar.innerHTML = `
             <h3>Dashboard</h3>
             <button onclick="setSidebarActive(this); loadPage('pages/home.html')" class="active">🏠 Overzicht</button>
@@ -57,33 +53,39 @@ function loadSection(section) {
         loadPage('pages/home.html');
     }
 
-    if (section === "calculators") {
+    if(section==="calculators"){
         sidebar.innerHTML = `
             <h3>Calculators</h3>
-            <button onclick="setSidebarActive(this); loadPage('pages/tool1.html')" class="active">📐 Materiaal Calculator</button>
-            <button onclick="setSidebarActive(this); loadPage('pages/tool2.html')">📏 Verstek Calculator</button>
+            <button onclick="setSidebarActive(this); loadPage('pages/tool1.html')" class="active">📐 Materiaal</button>
+            <button onclick="setSidebarActive(this); loadPage('pages/tool2.html')">📏 Verstek</button>
         `;
         loadPage('pages/tool1.html');
     }
 
-    if (section === "zaagstaten") {
+    if(section==="zaagstaten"){
         sidebar.innerHTML = `
             <h3>Zaagstaten</h3>
-            <button onclick="setSidebarActive(this); loadPage('pages/tool3.html')" class="active">📦 Corpus Generator</button>
+            <button onclick="setSidebarActive(this); loadPage('pages/tool3.html')" class="active">📦 Corpus</button>
         `;
         loadPage('pages/tool3.html');
     }
 }
 
-function goHome() {
-    document.querySelectorAll(".nav button")
-        .forEach(btn => btn.classList.remove("active"));
-
+function goHome(){
+    document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
     document.querySelector(".nav button").classList.add("active");
-    loadSection('home');
+    loadSection("home");
 }
 
-window.onload = () => loadSection('home');
+function toggleSidebar(){
+    const sidebar = document.querySelector(".sidebar");
+    sidebar.classList.toggle("collapsed");
+
+    const btn = document.querySelector(".toggle");
+    btn.textContent = sidebar.classList.contains("collapsed") ? "➡" : "⬅";
+}
+
+window.onload = ()=>loadSection("home");
 </script>
 
 </body>
