@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Zaaghoek Berekening</title>
+    <link rel="stylesheet" href="../style.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background-image: url('achtergrond1.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #333;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: 150px 1fr 150px;
+      width: 100%;
+      max-width: 1000px;
+    }
+    #logo {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      width: 150px; /* Vergroot het logo naar 1,5x de originele grootte */
+      height: auto;
+      z-index: 1000;
+      transition: left 0.3s ease; /* Smooth animatie voor het logo */
+    }
+    .form-container {
+      grid-column: 2;
+      background-color: rgba(255, 255, 255, 0.7);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin-top: 0;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input[type="number"], input[type="file"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 90%;
+      box-sizing: border-box;
+      margin-top: 5px;
+      font-size: 1rem;
+      height: 35px;
+    }
+    input[readonly] {
+      background-color: #c4e3cb;
+    }
+    img {
+  display: block;
+  margin: 5px auto 0 auto;
+  height: auto;
+  max-width: 55%;
+}
+button {
+      margin-top: 25px;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+}
+    @media (max-width: 700px) {
+  .container {
+    grid-template-columns: 1fr; /* Enkel één kolom */
+    padding: 10px;
+  }
+
+  .form-container {
+    grid-column: 1; /* Gebruik de enige kolom */
+    max-width: 100%;
+  }
+
+  #logo {
+    position: static;
+    display: block;
+    margin: 10px auto;
+  }
+}
+
+  </style>
+</head>
+<body>
+<<!--
+  <img id="logo" src="logo.png" alt="Logo" onclick="window.location.href='http://www.vanassem.nl'">
+-->
+  <div class="container">
+    <div class="form-container">
+       <h2>Zaaghoek Berekening</h2>
+
+  <img id="voorbeeld" src="verstek-uitleg.jpg" alt="verstek-uitleg.jpg">
+
+  <label for="hoekY">Hellingshoek Y (tussen 0 en 90°)</label>
+  <input type="number" id="hoekY" value="90">
+
+  <label for="hoekX">Verstekhoek X (bovenaanzicht) (°)</label>
+  <input type="number" id="hoekX" value="90">
+
+  <label for="uitslaghoekW">Uitslaghoek W (°)</label>
+  <input type="number" id="uitslaghoekW" readonly>
+
+  <label for="verstekV">Verstek (zaaginstelling) V (°)</label>
+  <input type="number" id="verstekV" readonly>
+
+  <label for="tegenhoekW">Tegenhoek uitslag W (°)</label>
+  <input type="number" id="tegenhoekW" readonly>
+
+
+  <button onclick="bereken()">Bereken</button>
+
+  <script>
+    function bereken() {
+      const Y = parseFloat(document.getElementById('hoekY').value); // E3
+      const X = parseFloat(document.getElementById('hoekX').value); // E4
+      const toRad = angle => angle * Math.PI / 180;
+      const toDeg = rad => rad * 180 / Math.PI;
+
+      // Stap 1 en 2
+      const F3 = Y;
+      const F4 = 180 - X;
+
+      // Stap 3 t/m 5
+      const H3 = Math.cos(toRad(F3));
+      const H6 = Math.sin(toRad(F3));
+      const I3 = Math.tan(toRad(F4 / 2));
+      const I6 = I3;
+      const J3 = I3;
+
+      // Stap 6
+      const mult_J3 = H3 * I3;
+      const L3 = 90 - toDeg(Math.atan(mult_J3));  // Uitslaghoek W
+
+      // Stap 7
+      const J6 = Math.cos(toRad(90 - L3));
+      const K6 = H6 * I6 * J6;
+      const L6 = toDeg(Math.atan(K6));  // Verstekhoek V
+
+      const tegenW = 90 - L3;
+
+      // Weergeven
+      document.getElementById('uitslaghoekW').value = L3.toFixed(2);
+      document.getElementById('verstekV').value = L6.toFixed(2);
+      document.getElementById('tegenhoekW').value = tegenW.toFixed(2);
+    }
+
+    // Afbeelding tonen
+    document.getElementById('imageInput').addEventListener('change', function (e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (evt) {
+          document.getElementById('preview').src = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Automatisch berekenen bij laden
+    window.onload = bereken;
+  </script>
+
+</body>
+</html>
